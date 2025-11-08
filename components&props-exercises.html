@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      function Paragraph() {
+        return <p>Hello, welcome to my website</p>;
+      }
+
+      function Inputs() {
+        return (
+          <>
+            <div>
+              <input type="text" placeholder="Email" size="30" />
+            </div>
+            <div>
+              <input type="password" placeholder="Password" size="30" />
+            </div>
+          </>
+        );
+      }
+
+      function Buttons() {
+        return (
+          <>
+            <button>Login</button>
+            <button>Sign Up</button>
+          </>
+        );
+      }
+
+      function LoginForm() {
+        return (
+          <>
+            <Inputs />
+            <Buttons />
+          </>
+        );
+      }
+
+      function ProductCard({ title, price, discountPrice, imageSrc }) {
+        return (
+          <div>
+            <img src={imageSrc} alt="" width="100" />
+
+            <p>{title}</p>
+
+            {discountPrice ? (
+              <del>
+                <p>Price: ${price}</p>
+              </del>
+            ) : (
+              <p>Price: ${price}</p>
+            )}
+
+            {discountPrice && <p>Discount Price: ${discountPrice}</p>}
+
+            <button>Add to Cart</button>
+          </div>
+        );
+      }
+
+      function App() {
+        return (
+          <>
+            <ProductCard
+              title="Cotton Socks"
+              price="10.90"
+              discountPrice="5.45"
+              imageSrc="socks.jpg"
+            />
+            <ProductCard
+              title="Tennis Balls"
+              price="6.00"
+              imageSrc="balls.jpg"
+            />
+            <ProductCard
+              title="Plain T-Shirt"
+              price="7.99"
+              imageSrc="t-shirt.jpg"
+            />
+          </>
+        );
+      }
+
+      const container = document.querySelector(".js-container");
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
