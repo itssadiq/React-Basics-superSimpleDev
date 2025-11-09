@@ -17,32 +17,59 @@
     <script type="text/babel">
       function ChatInput({ chatMessages, setChatMessages }) {
         const [inputText, setInputText] = React.useState("");
+        const [loading, setLoading] = React.useState(false);
 
         function saveInputText(event) {
           setInputText(event.target.value);
         }
 
-        function sendMessage() {
-          const newChatMessages = [
-            ...chatMessages,
-            {
-              message: inputText,
-              sender: "user",
-              id: crypto.randomUUID(),
-            },
-          ];
-          setChatMessages(newChatMessages);
+        async function sendMessage() {
+          if (inputText === "") {
+            return;
+          }
+          if (!loading) {
+            setLoading(true);
+            const newChatMessages = [
+              ...chatMessages,
+              {
+                message: inputText,
+                sender: "user",
+                id: crypto.randomUUID(),
+              },
+            ];
+            setChatMessages(newChatMessages);
+            setChatMessages([
+              ...newChatMessages,
+              {
+                message: "Loading...",
+                sender: "robot",
+                id: crypto.randomUUID(),
+              },
+            ]);
 
-          const response = Chatbot.getResponse(inputText);
-          setChatMessages([
-            ...newChatMessages,
-            {
-              message: response,
-              sender: "robot",
-              id: crypto.randomUUID(),
-            },
-          ]);
-          setInputText("");
+            setInputText("");
+
+            const response = await Chatbot.getResponseAsync(inputText);
+            setChatMessages([
+              ...newChatMessages,
+              {
+                message: response,
+                sender: "robot",
+                id: crypto.randomUUID(),
+              },
+            ]);
+            setLoading(false);
+          }
+        }
+
+        function sendMessageOnEnter(event) {
+          if (event.key === "Escape") {
+            setInputText("");
+          }
+
+          if (event.key === "Enter") {
+            sendMessage();
+          }
         }
 
         return (
@@ -53,6 +80,7 @@
               size="30"
               onChange={saveInputText}
               value={inputText}
+              onKeyDown={sendMessageOnEnter}
             />
             <button onClick={sendMessage}>Send</button>
           </>
