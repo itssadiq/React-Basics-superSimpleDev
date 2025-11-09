@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .button-on {
+        background-color: rgb(25, 135, 84);
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+      }
+
+      .button-off {
+        background-color: rgb(220, 53, 69);
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 5px;
+      }
+
+      .input-group {
+        margin-bottom: 10px;
+        padding: 5px 10px;
+        border-width: 1px;
+        border-radius: 5px;
+      }
+
+      .form-btn {
+        background-color: rgb(0, 123, 255);
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 5px;
+        margin-left: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="js-container"></div>
+
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev@8.6.4/dayjs.js"></script>
+
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+      function ToggleButton() {
+        const [isButtonOn, setIsButtonOn] = React.useState(true);
+        function switchButton() {
+          isButtonOn ? setIsButtonOn(false) : setIsButtonOn(true);
+        }
+        return (
+          <>
+            <button
+              className={isButtonOn ? "button-on" : "button-off"}
+              onClick={switchButton}
+            >
+              {isButtonOn ? "ON" : "OFF"}
+            </button>
+          </>
+        );
+      }
+
+      function Form() {
+        const [showPassword, setShowPassword] = React.useState(false);
+        function passwordSwitcher() {
+          !showPassword ? setShowPassword(true) : setShowPassword(false);
+        }
+        return (
+          <>
+            <div>
+              <input type="text" placeholder="Email" className="input-group" />
+            </div>
+            <div>
+              <input
+                type={!showPassword ? "password" : "text"}
+                placeholder="Password"
+                className="input-group"
+              />
+              <button className="form-btn" onClick={passwordSwitcher}>
+                Show
+              </button>
+            </div>
+            <div>
+              <button className="form-btn">Login</button>
+              <button className="form-btn">Sign Up</button>
+            </div>
+          </>
+        );
+      }
+
+      function Timer() {
+        const currentTime = dayjs().format("HH:mm:ss");
+
+        const [time, setTime] = React.useState(currentTime);
+
+        React.useEffect(() => {
+          setInterval(() => {
+            setTime(dayjs().format("HH:mm:ss"));
+          }, 1000);
+        }, []);
+        return <p>Current time {time}</p>;
+      }
+
+      function Counter() {
+        const [count, setCount] = React.useState(0);
+        const counterRef = React.useRef();
+
+        function updateCounter() {
+          setCount(count + 1);
+        }
+
+        function resetCounter() {
+          setCount(0);
+        }
+
+        // React.useEffect(() => {
+        //   const buttonElem = counterRef.current;
+
+        //   console.log(buttonElem);
+        // },[]);
+
+        function autoCounter() {
+          setInterval(() => {
+            const buttonElem = counterRef.current;
+
+            if (buttonElem) {
+              buttonElem.click();
+            }
+          }, 1000);
+
+          // console.log(counterRef.current);
+        }
+
+        return (
+          <>
+            <button onClick={updateCounter} ref={counterRef}>
+              Clicked {count} times
+            </button>
+            <button onClick={resetCounter}>Reset</button>
+            <button onClick={autoCounter}>Auto Click</button>
+          </>
+        );
+      }
+
+      function App() {
+        return (
+          <>
+            <Timer />
+            <Counter />
+          </>
+        );
+      }
+
+      const container = document.querySelector(".js-container");
+      ReactDOM.createRoot(container).render(<App />);
+    </script>
+  </body>
+</html>
