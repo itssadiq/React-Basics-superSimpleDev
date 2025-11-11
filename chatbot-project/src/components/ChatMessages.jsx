@@ -23,6 +23,7 @@ export function ChatMessages({ chatMessages }) {
   // }, [chatMessages]);
 
   const chatMessagesRef = useAutoScroll(chatMessages);
+
   return (
     <div className="chat-messages-container" ref={chatMessagesRef}>
       {chatMessages.map((chatMessage) => {
@@ -30,6 +31,7 @@ export function ChatMessages({ chatMessages }) {
           <ChatMessage
             message={chatMessage.message}
             sender={chatMessage.sender}
+            time={chatMessage.time}
             key={chatMessage.id}
           />
         );
