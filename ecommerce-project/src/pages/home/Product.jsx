@@ -5,14 +5,12 @@ import { useState } from "react";
 const Product = ({ product, loadCart }) => {
   const [quantity, setQuantity] = useState(1);
 
-  const addToCart = () => {
-    async () => {
-      await axios.post("/api/cart-items", {
-        productId: product.id,
-        quantity,
-      });
-      await loadCart();
-    };
+  const addToCart = async () => {
+    await axios.post("/api/cart-items", {
+      productId: product.id,
+      quantity,
+    });
+    await loadCart();
   };
 
   const selectQuantity = (e) => {
